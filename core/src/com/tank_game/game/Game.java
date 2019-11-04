@@ -30,13 +30,16 @@ public class Game extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		player.movement();
+		// Runs through the players actions
+		player.step();
 
+		// Draws all the textures in the game
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		batch.draw(player.tankImg, player.collision.x, player.collision.y);
 		batch.end();
 
+		// Updates the camera
 		camera.update();
 	}
 
