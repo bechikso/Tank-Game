@@ -4,25 +4,40 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 public class Tank extends ApplicationAdapter {
+    private SpriteBatch batch = new SpriteBatch();
+
     public Texture tankImg;
+    private Texture canonImg;
     public Rectangle collision;
 
-    public Tank(String imgPath, int x, int y) {
-        tankImg = new Texture(Gdx.files.internal(imgPath));
+    int timer = 0; // For counting up
+
+    public Tank(String tankImgPath, String canonImgPath, int x, int y) {
+        tankImg = new Texture(Gdx.files.internal(tankImgPath));
+        canonImg = new Texture(Gdx.files.internal(canonImgPath));
         collision = new Rectangle();
         collision.x = x;
         collision.y = y;
         collision.width = 64;
         collision.height = 64;
+
     }
 
     public void step() {
         movement();
         mouse_point();
+        timer++;
+
+        // Draws all the textures in the game
+        batch.begin();
+        batch.draw(tankImg, collision.x, collision.y);
+        batch.draw(canonImg, collision.x + 24, collision.y + 24);
+        batch.end();
     }
 
     public void movement() {
@@ -40,8 +55,9 @@ public class Tank extends ApplicationAdapter {
     public void mouse_point() {
         // Holds the mouse coordinates
         Vector3 mousePos = new Vector3();
-        System.out.println("x: " + Gdx.input.getX() + ", y: " + Gdx.input.getY());
-
-
+        if (timer == 50) {
+            System.out.println("x: " + Gdx.input.getX() + ", y: " + Gdx.input.getY());
+            timer = 0;
+        }
     }
 }
